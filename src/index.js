@@ -8,7 +8,6 @@ mongoose.connect('mongodb+srv://devidy:devidy@cluster0-enkyx.mongodb.net/devRada
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-
 app.use(express.json());
 app.use(routes);
 
