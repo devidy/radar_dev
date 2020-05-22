@@ -1,6 +1,8 @@
-const axios      = require('axios');
-const Dev        = require('../models/Dev');
-const { index } = require('../models/utils/PointSchema');
+const axios              = require('axios');
+const Dev                = require('../models/Dev');
+const { index }          = require('../models/utils/PointSchema');
+const parseStringAsArray = require('../utils/utils');
+const { update } = require('../models/Dev');
 
 module.exports = {
     async store(request, response)  {
@@ -14,8 +16,8 @@ module.exports = {
             
             const { name = login, avatar_url, bio} = apiResponse.data;
             
-            const techsArray = techs.split(',').map(tech => tech.trim());
-            
+            const techsArray = parseStringAsArray(techs);
+            console.log(techsArray);
             const location   = {
                 type: 'Point',
                 coordinates: [longitude, latitude]
@@ -38,5 +40,13 @@ module.exports = {
         const devs = await Dev.find();
 
         return response.json(devs);
+    },
+    
+    async delete(request, response) {
+        const { id } = request.params;
+        
+        const dev = await Dev.deleteOne({"_id": ObjectId(id)} );
+        
+        return response.json(dev);
     }
 };
